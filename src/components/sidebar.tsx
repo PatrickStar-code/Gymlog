@@ -49,13 +49,13 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<"light" | "dark">();
 
   useEffect(() => {
-    const actualTheme = window.matchMedia(
+    const isBlackTheme = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
 
-    setTheme(actualTheme ? "dark" : "light");
+    setTheme(isBlackTheme ? "dark" : "light");
 
-    if (theme === "dark") {
+    if (isBlackTheme) {
       document.documentElement.classList.add("dark");
       setTheme("dark");
     } else {
