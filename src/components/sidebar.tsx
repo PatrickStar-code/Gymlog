@@ -46,16 +46,15 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     },
   ];
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">();
+  const isBlackTheme = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+  const [theme, setTheme] = useState<"light" | "dark">(
+    isBlackTheme ? "dark" : "light"
+  );
 
   useEffect(() => {
-    const isBlackTheme = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-
-    setTheme(isBlackTheme ? "dark" : "light");
-
-    if (isBlackTheme) {
+    if (theme === "dark") {
       document.documentElement.classList.add("dark");
       setTheme("dark");
     } else {
