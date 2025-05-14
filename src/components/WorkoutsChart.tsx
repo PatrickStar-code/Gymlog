@@ -88,7 +88,7 @@ export default function MusclePieChart() {
   return (
     <div className="p-4 bg-background rounded-lg shadow">
       <h2 className="text-lg font-semibold mb-2">
-        📊 Treinos por Músculo no dia
+        📊 Exercícios por Músculo na semana
       </h2>
       <div className="h-72 flex items-center justify-center">
         <canvas ref={canvasRef} />

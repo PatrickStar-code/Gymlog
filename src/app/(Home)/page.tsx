@@ -46,29 +46,29 @@ export default function Home() {
   ];
 
   return (
-    <main className="p-4 h-screen w-screen">
+    <main className="p-4 h-screen w-screen overflow-x-hidden">
       <section className="">
         <BreadCrumbComponent {...thisRoute} />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  pl-12 items-center justify-center ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-12 md:gap-8  ml-12 items-center justify-center ">
           {Cards.map((card) => (
             <CardInfo key={card.title} {...card} />
           ))}
         </div>
-        <div className="flex flex-col lg:flex-row gap-12">
-          <Card className="mt-4 ml-12 flex flex-col w-full md:w-[46rem]  lg:w-[52rem]">
-            <CaloriesChart />
-          </Card>
-          <Card className="mt-4 ml-12 flex flex-col w-full md:w-[46rem]  lg:w-[52rem]">
-            <ProteinsChart />
-          </Card>
-        </div>
-        <div className="flex gap-12">
-          <Card className="mt-4 ml-12 flex flex-col w-full md:w-[46rem]  lg:w-[52rem]">
-            <MusclePieChart />
-          </Card>
-          <Card className="mt-4 ml-12 flex flex-col w-full md:w-[46rem]  lg:w-[52rem]">
-            <FatsPieChart />
-          </Card>
+        <div className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-8 md:ml-12">
+            <Card>
+              <CaloriesChart />
+            </Card>
+            <Card>
+              <ProteinsChart />
+            </Card>
+            <Card>
+              <MusclePieChart />
+            </Card>
+            <Card>
+              <FatsPieChart />
+            </Card>
+          </div>
         </div>
       </section>
     </main>

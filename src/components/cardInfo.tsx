@@ -4,7 +4,7 @@ import { TCard } from "@/app/Types";
 
 export default function CardInfo(data: TCard) {
   return (
-    <Card className=" mt-4 flex flex-col w-[17.5rem] lg:w-[22.5rem]">
+    <Card className=" mt-4 flex flex-col  ">
       <CardHeader className="text-start text-xl">{data.title}</CardHeader>
       <div className="flex justify-between">
         <CardContent> {data.icon}</CardContent>

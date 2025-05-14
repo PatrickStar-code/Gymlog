@@ -76,7 +76,7 @@ export default function FatsPieChart() {
       <h2 className="text-lg font-semibold mb-2">
         🍽️ Distribuição de Gorduras no dia
       </h2>
-      <div className="h-72 w-full flex items-center justify-center">
+      <div className="h-72 w-full  flex items-center justify-center">
         <canvas ref={canvasRef} />
       </div>
     </div>

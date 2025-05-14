@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -13,8 +13,11 @@ import {
   NotepadText,
   Sun,
 } from "lucide-react";
+import { ThemeContext } from "@/app/Context/ThemeContext";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
+  const { theme, handleChangeTheme } = useContext(ThemeContext);
+
   const links = [
     {
       label: "Inicio",
@@ -25,7 +28,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     },
     {
       label: "Treinos",
-      href: "/treinos",
+      href: "/Treinos",
       icon: (
         <Dumbbell className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
       ),
@@ -46,23 +49,6 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     },
   ];
   const [open, setOpen] = useState(false);
-  const isBlackTheme = window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches;
-  const [theme, setTheme] = useState<"light" | "dark">(
-    isBlackTheme ? "dark" : "light"
-  );
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      setTheme("light");
-    }
-    console.log(theme);
-  }, [theme]);
 
   return (
     <div
@@ -84,7 +70,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div>
-            <div onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+            <div onClick={() => handleChangeTheme(theme as string)}>
               <SidebarLink
                 className="pl-1 mb-4"
                 link={{

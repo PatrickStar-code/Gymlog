@@ -92,7 +92,7 @@ export default function CaloriesChart() {
       <h2 className="text-lg font-semibold mb-2">
         📅 Calorias nos últimos dias
       </h2>
-      <div className="h-40">
+      <div>
         <canvas ref={canvasRef} />
       </div>
     </div>
