@@ -1,4 +1,5 @@
 type NewType = {
+  icon: React.ReactNode;
   principal: string;
   subRoutes?: string[];
 };
@@ -9,4 +10,6 @@ export type TCard = {
   icon: React.ReactNode;
   title: string;
   quantity: number;
+  expected_quantity?: number;
+  unit?: string;
 };
