@@ -584,7 +584,7 @@ function MultiStepForm() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <Card className=" bg-white/80 dark:bg-gray-800/80 border-0 shadow-none">
+      <Card className=" bg-white/80 dark:bg-gray-800/80 border-0 shadow-none  ">
         <CardHeader>
           <CardTitle>Create User Profile</CardTitle>
           <CardDescription>
