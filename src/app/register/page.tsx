@@ -13,11 +13,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/CardLogin";
-import LoginForm from "@/components/LoginForm";
 import Button from "@/components/ButtonLogin";
+import MultiStepComponent from "@/components/MultiStepRegister";
 import Link from "next/link";
 
-const GymLogLogin = () => {
+const GymLogRegister = () => {
   const { theme, handleChangeTheme } = useContext(ThemeContext);
 
   return (
@@ -47,7 +47,7 @@ const GymLogLogin = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        className="w-full max-w-2xl"
       >
         <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-orange-200 dark:border-gray-700 shadow-2xl">
           <CardHeader className="text-center space-y-4">
@@ -70,26 +70,17 @@ const GymLogLogin = () => {
           </CardHeader>
 
           <CardContent>
-            <LoginForm />
+            <MultiStepComponent />
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
-            <div className="text-center">
-              <Button
-                variant="link"
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400"
-              >
-                Forgot your password?
-              </Button>
-            </div>
-
             <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <Link
-                href="/register"
+                href="/"
                 className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 p-0 h-auto font-semibold"
               >
-                Sign up here
+                Sig in here
               </Link>
             </div>
           </CardFooter>
@@ -108,4 +99,4 @@ const GymLogLogin = () => {
   );
 };
 
-export default GymLogLogin;
+export default GymLogRegister;
