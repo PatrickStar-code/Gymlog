@@ -4,7 +4,6 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -42,6 +41,10 @@ import {
   CardTitle,
 } from "./CardLogin";
 
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
+import { useForm } from "react-hook-form";
+
 interface UserFormData {
   username: string;
   email: string;
@@ -57,6 +60,23 @@ interface UserFormData {
   gender: string;
   isActive: boolean;
 }
+
+const UserRegisterSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters long"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  avatarUrl: z.string().url("Invalid URL"),
+  height: z.string().min(1, "Height is required"),
+  weight: z.string().min(1, "Weight is required"),
+  age: z.string().min(1, "Age is required"),
+  dateOfBirth: z.string().min(1, "Date of birth is required"),
+  activityLevel: z.string().min(1, "Activity level is required"),
+  goal: z.string().min(1, "Goal is required"),
+  goalWeight: z.string().min(1, "Goal weight is required"),
+  gender: z.string().min(1, "Gender is required"),
+});
+
+type UserRegisterSchema = z.infer<typeof UserRegisterSchema>;
 
 interface StepProps {
   data: UserFormData;
@@ -81,7 +101,19 @@ const initialData: UserFormData = {
   isActive: true,
 };
 
-function PersonalInformationStep({ data, updateData, errors }: StepProps) {
+function PersonalInformationStep() {
+  const {
+    register,
+    watch,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<UserRegisterSchema>({
+    resolver: zodResolver(UserRegisterSchema),
+  });
+
+  const imageUrl = watch("avatarUrl");
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3 mb-6">
@@ -101,13 +133,14 @@ function PersonalInformationStep({ data, updateData, errors }: StepProps) {
           <Label htmlFor="username">Username *</Label>
           <Input
             id="username"
-            value={data.username}
-            onChange={(e) => updateData({ username: e.target.value })}
+            {...register("username")}
             placeholder="Enter your username"
             className={errors.username ? "border-destructive" : ""}
           />
           {errors.username && (
-            <p className="text-sm text-destructive">{errors.username}</p>
+            <p className="text-sm text-destructive">
+              {errors.username.message}
+            </p>
           )}
         </div>
 
@@ -116,13 +149,12 @@ function PersonalInformationStep({ data, updateData, errors }: StepProps) {
           <Input
             id="email"
             type="email"
-            value={data.email}
-            onChange={(e) => updateData({ email: e.target.value })}
+            {...register("email")}
             placeholder="Enter your email"
             className={errors.email ? "border-destructive" : ""}
           />
           {errors.email && (
-            <p className="text-sm text-destructive">{errors.email}</p>
+            <p className="text-sm text-destructive">{errors.email.message}</p>
           )}
         </div>
 
@@ -131,13 +163,14 @@ function PersonalInformationStep({ data, updateData, errors }: StepProps) {
           <Input
             id="password"
             type="password"
-            value={data.password}
-            onChange={(e) => updateData({ password: e.target.value })}
+            {...register("password")}
             placeholder="Enter your password"
             className={errors.password ? "border-destructive" : ""}
           />
           {errors.password && (
-            <p className="text-sm text-destructive">{errors.password}</p>
+            <p className="text-sm text-destructive">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
@@ -145,21 +178,25 @@ function PersonalInformationStep({ data, updateData, errors }: StepProps) {
           <Label htmlFor="avatarUrl">Avatar URL *</Label>
           <Input
             id="avatarUrl"
-            value={data.avatarUrl}
-            onChange={(e) => updateData({ avatarUrl: e.target.value })}
+            {...register("avatarUrl")}
             placeholder="Enter avatar image URL"
             className={errors.avatarUrl ? "border-destructive" : ""}
+            onChange={() => setValue("avatarUrl", imageUrl)}
           />
           {errors.avatarUrl && (
-            <p className="text-sm text-destructive">{errors.avatarUrl}</p>
+            <p className="text-sm text-destructive">
+              {errors.avatarUrl.message}
+            </p>
           )}
         </div>
       </div>
 
-      {data.avatarUrl && (
+      {imageUrl && (
         <div className="flex justify-center">
-          <img
-            src={data.avatarUrl}
+          <Image
+            src={imageUrl}
+            width={200}
+            height={200}
             alt="Avatar preview"
             className="w-20 h-20 rounded-full object-cover border-2 border-border"
           />

@@ -14,9 +14,14 @@ import {
   Sun,
 } from "lucide-react";
 import { ThemeContext } from "@/app/Context/ThemeContext";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import { UserContext } from "@/app/Context/UserContext";
 
 export function SidebarDemo({ children }: { children: React.ReactNode }) {
   const { theme, handleChangeTheme } = useContext(ThemeContext);
+  const Router = useRouter();
+  const { User } = useContext(UserContext);
 
   const links = [
     {
@@ -54,7 +59,7 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "mx-auto flex w-full flex-1 flex-col overflow-hidden   border-neutral-200  md:flex-row",
-        "h-screen" // for your use case, use `h-screen` instead of `h-[60vh]`
+        "h-screen"
       )}
     >
       <Sidebar open={open} setOpen={setOpen} animate={true}>
@@ -91,19 +96,25 @@ export function SidebarDemo({ children }: { children: React.ReactNode }) {
               ></SidebarLink>
             </div>
 
+            <div
+              onClick={() => (
+                deleteCookie("refresh-token"), Router.replace("/")
+              )}
+            >
+              <SidebarLink
+                className="pl-1 mb-4"
+                link={{
+                  label: "Sair",
+                  href: "#",
+                  icon: (
+                    <ArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+                  ),
+                }}
+              ></SidebarLink>
+            </div>
             <SidebarLink
-              className="pl-1 mb-4"
               link={{
-                label: "Sair",
-                href: "#",
-                icon: (
-                  <ArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
-                ),
-              }}
-            ></SidebarLink>
-            <SidebarLink
-              link={{
-                label: "Robson Manu",
+                label: User.username,
                 href: "#",
                 icon: (
                   <Image

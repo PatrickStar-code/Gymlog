@@ -1,14 +1,48 @@
+"use client";
 import BreadCrumbComponent from "@/components/BreadCrumb";
 import { Beef, Dumbbell, HomeIcon, Pizza, Soup } from "lucide-react";
-import { TCard } from "../Types";
 import CaloriesChart from "@/components/CaloriesChart";
 import { Card } from "@/components/ui/card";
 import ProteinsChart from "@/components/ProteinChart";
 import MusclePieChart from "@/components/WorkoutsChart";
 import FatsPieChart from "@/components/FatChart";
 import CardInfo from "@/components/cardInfo";
+import { useContext, useEffect } from "react";
+import { verifyRefreshTokenClient } from "@/app/Actions/VerifyRefreshToken";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import { TCard } from "@/app/Types";
+import { getDataFromUser } from "@/app/Actions/GetDataFromUser";
+import { UserContext } from "@/app/Context/UserContext";
 
 export default function Home() {
+  const Router = useRouter();
+  const { handleSetUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const refreshToken = getCookie("refresh-token");
+
+    if (refreshToken) {
+      verifyRefreshTokenClient(refreshToken)
+        .then((res) => localStorage.setItem("token", res.tokenJwt))
+        .catch(console.error);
+    } else {
+      Router.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    const refreshToken = getCookie("refresh-token");
+
+    if (refreshToken) {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      getDataFromUser({ token, refreshToken })
+        .then((res) => handleSetUser(res))
+        .catch(console.error);
+    }
+  }, []);
+
   const thisRoute = {
     principal: "Home",
     icon: (

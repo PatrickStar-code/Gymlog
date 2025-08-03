@@ -16,9 +16,28 @@ import {
 import LoginForm from "@/components/LoginForm";
 import Button from "@/components/ButtonLogin";
 import Link from "next/link";
+import { useEffect } from "react";
+import { getCookie } from "cookies-next";
+import { verifyRefreshTokenClient } from "./Actions/VerifyRefreshToken";
+import { useRouter } from "next/navigation";
 
 const GymLogLogin = () => {
   const { theme, handleChangeTheme } = useContext(ThemeContext);
+  const router = useRouter();
+  useEffect(() => {
+    const token = getCookie("refresh-token");
+
+    if (token) {
+      verifyRefreshTokenClient(token)
+        .then((res) => {
+          localStorage.setItem("token", res.tokenJwt);
+          router.push("/dashboard");
+        })
+        .catch(console.error);
+    } else {
+      console.log("Waiting for refresh token...");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4 relative overflow-hidden">

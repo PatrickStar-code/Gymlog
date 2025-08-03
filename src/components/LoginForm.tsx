@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
 import Login from "@/app/Actions/Login";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const UserLoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -57,20 +59,39 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<UserLoginSchemaType>({
     resolver: zodResolver(UserLoginSchema),
   });
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const Router = useRouter();
 
   async function onSubmit(data: UserLoginSchemaType) {
+    const theme = document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+
     try {
       setLoading(true);
-      await Login(data);
+      const res = await Login(data);
+
+      if (res?.successOperation) {
+        if (res?.info?.tokenJwt) {
+          localStorage.setItem("token", res?.info?.tokenJwt);
+          toast.success("Login successful", { theme: theme });
+          Router.push("/dashboard");
+        }
+      } else {
+        toast.error("Login failed", { theme: theme });
+        console.log(res?.errors);
+      }
     } catch (error) {
-      console.warn(error);
+      console.log(error);
+      toast.error("Login failed", { theme: theme });
     } finally {
       setLoading(false);
+      reset();
     }
   }
 
@@ -135,6 +156,9 @@ export default function LoginForm() {
             )}
           </Button>
         </div>
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password.message}</p>
+        )}
       </div>
 
       <Button

@@ -13,3 +13,8 @@ export type TCard = {
   expected_quantity?: number;
   unit?: string;
 };
+
+export type TokenJwt = {
+  tokenJwt: string;
+  refreshJwt: string;
+};
